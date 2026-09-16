@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import './styles/names.css';
 import Nav from './components/Nav';
 import NamesPage from './pages/NamesPage';
@@ -265,12 +265,13 @@ function App() {
       <div className="App">
         <div className="container">
           <div className="router">
-            <BrowserRouter>
+            <HashRouter>
               <Nav
                   rawData={sourceData}
                   defaultData={sourceData}
                   filters={filters}
                   patchFilters={patchFilters}
+                  filteredCount={catalogueData.length}
                   lastSheetSync={lastSheetSync}
                   isRefreshingSheet={isRefreshingSheet}
                   onRefreshSheet={refreshFromSheet}
@@ -316,7 +317,7 @@ function App() {
                       } />
               </Route>
               </Routes>
-            </BrowserRouter>
+            </HashRouter>
           </div>
         </div>
       </div>

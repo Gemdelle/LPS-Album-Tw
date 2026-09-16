@@ -1,8 +1,9 @@
 import "../styles/card.css";
 import {IPetshopData} from "../types/types";
 import {useState} from "react";
-import {isFavourite, nextVipLevel, vipLevel} from "../services/petOverrides";
+import {isFavourite} from "../services/petOverrides";
 import zoomNumberFrame from "../assets/frames/zoom-number-frame.png";
+import { petImageSrc } from "../services/petImage";
 
 interface ICardData {
     data: IPetshopData;
@@ -56,10 +57,6 @@ const Card = ({
         updatePet(data.id, { favourite: isFavourite(data.favourite) ? "false" : "true" });
     };
 
-    const toggleVip = () => {
-        updatePet(data.id, { vip: nextVipLevel(data.vip) });
-    };
-
     const toggleOwned = () => {
         updatePet(data.id, { status: data.status === "OWNED" ? "NOT_OWNED" : "OWNED" });
     };
@@ -70,7 +67,7 @@ const Card = ({
 
     return (
         <div
-            className={`card-container ${vipLevel(data.vip) >= 1 ? "vip" : "basic"} ${data.status === "OWNED" ? "owned" : "not-owned"}`}>
+            className={`card-container ${isFavourite(data.favourite) ? "vip" : "basic"} ${data.status === "OWNED" ? "owned" : "not-owned"}`}>
             <div className="card-body">
                 <div className="card-number">
                     <img className="card-number-frame" src={zoomNumberFrame} alt="" />
@@ -92,7 +89,7 @@ const Card = ({
                     >
                         <img
                             className="image"
-                            src={`Images/${data.id}.jpg`}
+                            src={petImageSrc(data.id)}
                             alt=""
                             loading="lazy"
                             decoding="async"
@@ -123,12 +120,6 @@ const Card = ({
                             onClick={toggleOwned}
                             role="button"
                             aria-label="Owned"
-                        />
-                        <div
-                            className={`vip-toggle vip-${vipLevel(data.vip)}`}
-                            onClick={toggleVip}
-                            role="button"
-                            aria-label="VIP"
                         />
                         <div
                             className={`like-toggle ${isFavourite(data.favourite) ? "liked" : "not-liked"}`}

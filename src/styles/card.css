@@ -188,7 +188,6 @@
 }
 
 .card-container .owned-toggle,
-.card-container .vip-toggle,
 .card-container .like-toggle,
 .card-container .gender-toggle {
     width: 1.35vw;
@@ -202,7 +201,6 @@
 }
 
 .card-container .owned-toggle:hover,
-.card-container .vip-toggle:hover,
 .card-container .like-toggle:hover,
 .card-container .gender-toggle:hover {
     transform: scale(1.12);
@@ -214,16 +212,6 @@
 
 .card-container .owned-toggle.locked {
     background-image: url("../assets/icons/not-owned.png");
-}
-
-.card-container .vip-toggle {
-    background-image: url("../assets/icons/vip.png");
-    filter: brightness(45%);
-}
-
-.card-container .vip-toggle.vip-1,
-.card-container .vip-toggle.vip-2 {
-    filter: brightness(100%);
 }
 
 .card-container .like-toggle.liked {

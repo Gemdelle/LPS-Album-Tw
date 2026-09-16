@@ -1,246 +1,398 @@
-#guessing-container {
+.game-page {
     display: flex;
-    align-items: center;
     flex-direction: column;
-}
-
-#guessing-image {
-    height: 26vw;
-    width: 26vw;
-    background-image: url(../assets/square-pet-frame.png);
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    background-image: url("../assets/game/game-bg.png");
     background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#guessing-image img {
-    height: 55%;
-    width: 55%;
-}
-
-.answer-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-#answer-container div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 23vw;
-    height: 4vw;
-    background-image: url(../assets/card-frames/basic-frame.png);
-    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    margin: 0.3vw 0;
-    font-family: 'Pinyon Script', cursive;
-    font-size: 1.4vw;
-    color: rgb(43, 40, 11);
-    font-weight: 600;
-    text-shadow: 0 0.2vw 0.4vw rgb(255, 255, 255);
-    transition: all 300ms ease-in-out;
 }
 
-#answer-container div:hover {
-    cursor: pointer;
-    transform: scale(105%);
-    filter: contrast(180%);
+.game-board {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.4vw;
+    background-color: purple;
 }
 
-.correct-answer {
+.game-main {
+    width: 50%;
+    height: 90%;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.game-score {
+    width: 100%;
+    height: 18%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1%;
+    flex-shrink: 0;
+    background-image: url("../assets/game/bar-container.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.game-score-star {
+    width: 2.2vw;
+    height: 2.2vw;
+    flex-shrink: 0;
+    animation: game-star-spin 10s linear infinite;
+}
+
+.game-score-star-icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/icons/vip.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: brightness(115%) saturate(120%);
+}
+
+.game-score-star-icon.pop {
+    animation: game-star-pop 0.55s ease;
+}
+
+@keyframes game-star-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes game-star-pop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.45);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.game-progress {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
     background-color: green;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.game-progress-frame {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.game-progress-label {
+    margin: 0;
+    font-family: 'Old Standard TT', serif;
+    font-size: 1.05vw;
+    font-style: italic;
+    color: rgb(70, 66, 48);
+}
+
+.game-progress-score {
+    margin: 0;
+    font-family: 'Pinyon Script', cursive;
+    font-size: 1.35vw;
+    font-weight: 700;
+    color: rgb(55, 52, 40);
+    white-space: nowrap;
+}
+
+.game-bar-track {
+    position: relative;
+    width: 38%;
+    height: 100%;
+}
+
+.game-bar-shell,
+.game-bar-fill img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.game-bar-shell {
+    z-index: 0;
+    filter: brightness(70%);
+}
+
+.game-bar-fill {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.game-bar-icons {
+    position: absolute;
+    inset: 4% 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.game-vip-mark {
+    width: 1.35vw;
+    height: 1.35vw;
+    background-image: url("../assets/icons/vip.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: brightness(38%);
+    flex-shrink: 0;
+}
+
+.game-vip-mark.filled {
+    filter: brightness(115%) saturate(120%);
+}
+
+.game-pet {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: yellow;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.game-pet-number {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    isolation: isolate;
+    width: 9.6vw;
+    aspect-ratio: 726 / 285;
+    margin-top: 1.1vh;
+}
+
+.game-pet-number-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.game-pet-number span {
+    position: relative;
+    z-index: 2;
+    font-family: 'Pinyon Script', cursive;
+    font-size: 1.35vw;
+    font-weight: 800;
+    color: rgb(247, 244, 226);
+    text-shadow: 0 0.08vw 0.18vw rgba(0, 0, 0, 0.65);
+}
+
+.game-pet-wrap {
+    position: relative;
+    width: min(38vh, 22vw);
+    height: min(38vh, 22vw);
+    filter: drop-shadow(0 0.35vw 0.7vw rgba(0, 0, 0, 0.45));
+}
+
+.game-pet-wrap img {
+    position: absolute;
+    width: 92%;
+    height: 92%;
+    left: 4%;
+    top: 4%;
+    object-fit: cover;
+    display: block;
+    z-index: 1;
+}
+
+.game-pet-wrap .pet-frame {
+    position: absolute;
+    inset: 0;
+    background-image: url("../assets/square-pet-frame.png");
+    background-position: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.game-options {
+    width: 35%;
+    height: 90%;
+    background-image: url("../assets/game/options-frame.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+}
+
+.game-options-list {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.8vh;
+}
+
+.game-options-list button {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    aspect-ratio: 1682 / 243;
+    height: auto;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 280ms ease, filter 280ms ease;
+}
+
+.game-option-frame {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: url("../assets/frames/zoom-name-frame.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+}
+
+.game-option-text {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 1.4vw;
+    font-family: 'Old Standard TT', serif;
+    font-size: 1.05vw;
+    font-style: italic;
+    font-weight: 400;
+    color: rgb(247, 244, 226);
+    text-shadow: 0 0.08vw 0.16vw rgba(0, 0, 0, 0.65);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.game-options-list button:hover {
+    transform: scale(1.05);
+    filter: brightness(1.08);
+}
+
+.correct-answer .game-option-text {
+    color: rgb(186, 232, 176);
 }
 
 .cheats {
-    width: 3vw;
-    height: 2vw;
     position: absolute;
-    left: 30%;
+    left: 0.4vw;
+    bottom: 13vh;
+    width: 1.2vw;
+    height: 1.2vw;
+    border: none;
+    background: transparent;
+    opacity: 0.01;
+    cursor: pointer;
 }
 
 .finish-container {
-    position: relative;
-    width: 50vw;
-    height: 40vw;
+    flex: 1;
+    min-height: 0;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     flex-direction: column;
-}
-
-.game-progress-container {
-    display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
-    width: 13vw;
-    height: 13vw;
-    background-image: url(../assets/card-frames/basic-frame.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    animation: float 3.5s infinite linear;
-    margin-bottom: 9vw;
+    gap: 1.2vh;
 }
 
-.game-progress-container span {
-    margin-top: 4vw;
+.finish-title {
+    margin: 0;
+    font-family: 'Old Standard TT', serif;
+    font-size: 2vw;
+    font-style: italic;
+    color: rgb(247, 244, 226);
+}
+
+.finish-score {
+    margin: 0;
     font-family: 'Pinyon Script', cursive;
-    font-size: 1.4vw;
-    color: rgb(217, 216, 197);
-    font-weight: 600;
-    text-shadow: 0 0.2vw 0.4vw rgb(0, 0, 0);
+    font-size: 3.2vw;
+    color: rgb(247, 244, 226);
 }
 
 .replay-btn {
-    background-image: url(../assets/catalogue-frame.png);
-    background-size: cover;
+    background-image: url("../assets/catalogue-frame.png");
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    width: 7vw;
-    height: 5vw;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    position: absolute;
-    z-index: 3;
-    bottom: 1vw;
-    transition: all 300ms ease-in-out;
+    width: 8vw;
+    height: 5.4vw;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: transform 280ms ease;
 }
 
 .replay-btn span {
     font-family: 'Pinyon Script', cursive;
-    font-size: 1vw;
-    margin-top: 0.9vw;
-    color:  rgb(217, 216, 197);
-    font-weight: 600;
-    text-shadow: 0 0.2vw 0.4vw rgb(0 0 0);
+    font-size: 1.15vw;
+    color: rgb(247, 244, 226);
 }
 
 .replay-btn:hover {
-    background-image: url(../assets/cards-frame.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 7vw;
-    height: 5vw;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    position: absolute;
-    z-index: 3;
-    bottom: 1vw;
-    transform: scale(110%);
-    transition: all 300ms ease-in-out;
-    cursor: pointer;
+    transform: scale(1.08);
 }
 
-.replay-btn:hover span {
-    font-family: 'Pinyon Script', cursive;
-    font-size: 1vw;
-    margin-top: 0.9vw;
-    color: rgb(23, 23, 21);
-    font-weight: 600;
-    text-shadow: 0 0.2vw 0.4vw rgb(0 0 0);
+.game-page footer {
+    flex-shrink: 0;
 }
 
-.finish-container .stars-container {
-    background-image: url(../assets/icons/F-gem.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 11vw;
-    width: 34vw;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin-top: 5vw;
-}
-
-.finish-container img {
-    width: 50vw;
-}
-
-.finish-background {
-    position: absolute;
-    width: 50vw;
-    height: 40vw;
-    background-image: url(../assets/header.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.progress-count {
-    background-image: url(../assets/sidebar.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 6vw;
-    width: 5vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 0.1vw;
-    filter: contrast(160%);
-    position: absolute;
-    top: 27vw;
-    font-family: 'Pinyon Script', cursive;
-    font-size: 1vw;
-    color: rgb(201, 200, 191);
-    font-weight: 600;
-    text-shadow: 0 0.2vw 0.4vw rgb(63, 59, 59);
-}
-
-
-.star-accomplish {
-    background-image: url("../assets/icons/vip.png");
-    background-position: center;
-    background-size: contain;
-    width: 5vw;
-    height: 5vw;
-}
-
-.star-missing {
-    background-image: url("../assets/icons/vip.png");
-    background-position: center;
-    background-size: contain;
-    width: 5vw;
-    height: 5vw;
-}
-
-.finish-container .star-accomplish {
-    background-image: url("../assets/icons/vip.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 8vw;
-    height: 8vw;
-    margin-top: 1vw;
-}
-
-.finish-container .star-missing {
-    background-image: url("../assets/icons/vip.png");
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 8vw;
-    height: 8vw;
-    margin-top: 1vw;
-}
-
-@keyframes float {
-    0% {
-        margin-bottom: 9.5vw;
-    }
-
-    50% {
-        margin-bottom: 10.5vw;
-    }
-
-    100% {
-        margin-bottom: 9.5vw;
-    }
+.router main.game-page {
+    overflow: hidden;
 }

@@ -1,6 +1,7 @@
 import '../styles/filterscatalogue.css';
 import IdFilter from "./IdFilter";
 import OwnedFilter from './OwnedFilter';
+import { petImageSrc } from "../services/petImage";
 const FiltersCatalogue = ({ data, defaultData, setCatalogueData, selectedPetShop }: any) => {
 
     return (
@@ -14,7 +15,7 @@ const FiltersCatalogue = ({ data, defaultData, setCatalogueData, selectedPetShop
                     <span><i>Animal: </i>{selectedPetShop.animal}</span>
                 </div>
                 <div className='petshop-image'>
-                    <img src={`Images/${selectedPetShop.id}.jpg`} alt="" />
+                    <img src={petImageSrc(selectedPetShop.id)} alt="" />
                 </div>
             </div>
 

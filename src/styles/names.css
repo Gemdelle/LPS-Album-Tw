@@ -45,7 +45,7 @@ code {
   overflow: hidden;
 }
 
-.router main:not(.catalogue-page) {
+.router main:not(.catalogue-page):not(.game-page) {
   overflow: auto;
 }
 

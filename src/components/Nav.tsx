@@ -11,11 +11,14 @@ import BreedFilter from "./BreedFilter";
 import GiftersFilter from "./GiftersFilter";
 import GenerationFilter from "./GenerationFilter";
 import OwnedFilter from "./OwnedFilter";
+import NamedFilter from "./NamedFilter";
 
-const Nav = ({ rawData, defaultData, filters, patchFilters, lastSheetSync, isRefreshingSheet, onRefreshSheet }: any) => {
+const Nav = ({ rawData, defaultData, filters, patchFilters, filteredCount, lastSheetSync, isRefreshingSheet, onRefreshSheet }: any) => {
     const totalOwned = rawData.filter((data: any) => data.status == "OWNED");
     const totalNotOwned = rawData.filter((data: any) => data.status == "NOT_OWNED");
-    const totalNotNamed = totalOwned.filter((data: any) => data.name == "");
+    const totalNotNamedOwned = totalOwned.filter((data: any) => data.name == "");
+    const totalNamed = rawData.filter((data: any) => String(data.name || "").trim() !== "");
+    const totalNotNamed = rawData.filter((data: any) => String(data.name || "").trim() === "");
 
     return (
         <nav>
@@ -26,17 +29,13 @@ const Nav = ({ rawData, defaultData, filters, patchFilters, lastSheetSync, isRef
                     </NavLink>
                 </li>
                 <li className='link'>
-                    <NavLink style={{ textDecoration: 'none' }} to="/names" className={({ isActive }) => `${isActive ? "active" : ""}`}>
-                        <span>Names</span>
-                    </NavLink>
-                </li>
-                <li className='link'>
                     <NavLink style={{ textDecoration: 'none' }} to="/guess-game"><span>Game</span></NavLink>
                 </li>
             </ul>
 
             <div className='filter-container'>
                 <NameFilter filters={filters} patchFilters={patchFilters} />
+                <NamedFilter filters={filters} patchFilters={patchFilters} />
                 <OwnedFilter filters={filters} patchFilters={patchFilters} />
                 <YearsFilter filters={filters} patchFilters={patchFilters} />
                 <ColoursFilter filters={filters} patchFilters={patchFilters} />
@@ -47,6 +46,10 @@ const Nav = ({ rawData, defaultData, filters, patchFilters, lastSheetSync, isRef
                 <AnimalFilter filters={filters} patchFilters={patchFilters} defaultData={defaultData} />
                 <BreedFilter filters={filters} patchFilters={patchFilters} defaultData={defaultData} />
                 <GiftersFilter filters={filters} patchFilters={patchFilters} defaultData={defaultData} />
+                <div className="header-filter filter-result">
+                    <label>Results</label>
+                    <strong>{filteredCount ?? 0}</strong>
+                </div>
             </div>
 
             <div className='stats-container'>
@@ -64,8 +67,18 @@ const Nav = ({ rawData, defaultData, filters, patchFilters, lastSheetSync, isRef
                         <span>To get</span>
                     </div>
                     <div className="header-total">
-                        <strong>{totalNotNamed.length}</strong>
+                        <strong>{totalNotNamedOwned.length}</strong>
                         <span>Missing</span>
+                    </div>
+                    <div className="header-total">
+                        <i className="stat-icon stat-icon-named" />
+                        <strong>{totalNamed.length}</strong>
+                        <span>Named</span>
+                    </div>
+                    <div className="header-total">
+                        <i className="stat-icon stat-icon-not-named" />
+                        <strong>{totalNotNamed.length}</strong>
+                        <span>Not named</span>
                     </div>
                 </div>
                 <div className="sheet-sync">

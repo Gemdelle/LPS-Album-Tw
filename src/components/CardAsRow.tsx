@@ -1,4 +1,5 @@
 import "../styles/card-as-row.css";
+import { petImageSrc } from "../services/petImage";
 
 interface ICardData {
     data: IPetshopData
@@ -34,8 +35,6 @@ const CardAsRow = ({ data: {
     gifter
 } }: ICardData) => {
 
-    const imageId = String(id).split(" - ")[0];
-
     return (
         <div
             className={"card-as-row " + name ? "card" : "cardName"}
@@ -43,7 +42,7 @@ const CardAsRow = ({ data: {
             <div className="card-body">
                 <div className="image-container">
                     <div className={name ? "portrait" : "portraitName"}></div>
-                    <img className="image" src={`Images/${imageId}.jpg`} alt="" />
+                    <img className="image" src={petImageSrc(id)} alt="" />
                 </div>
 
                 <div className="name-container">

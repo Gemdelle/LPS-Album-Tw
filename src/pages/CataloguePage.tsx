@@ -3,12 +3,11 @@ import { useState, useEffect } from "react";
 import Card from "../components/Card";
 import { IPetshopData } from '../types/types';
 import { formatGeneration } from '../services/catalogueFilters';
-import { isFavourite, nextVipLevel, vipLevel } from '../services/petOverrides';
+import { isFavourite } from '../services/petOverrides';
 import Footer from "../components/Footer";
 import zoomNumberFrame from "../assets/frames/zoom-number-frame.png";
 import zoomNameFrame from "../assets/frames/zoom-name-frame.png";
-
-const petImageSrc = (id: string | number) => `/Images/${id}.jpg`;
+import { petImageSrc } from "../services/petImage";
 
 const CataloguePage = ({ setLocation, data, updatePet }: any) => {
     const [editingId, setEditingId] = useState<number | null>(null);
@@ -96,16 +95,6 @@ const CataloguePage = ({ setLocation, data, updatePet }: any) => {
         updatePet(petshop.id, { favourite: isFavourite(petshop.favourite) ? "false" : "true" });
     };
 
-    const toggleVip = (petshop: any) => {
-        updatePet(petshop.id, { vip: nextVipLevel(petshop.vip) });
-    };
-
-    const isMale = (gender: unknown) => String(gender || "").trim().toUpperCase().startsWith("M");
-
-    const toggleGender = (petshop: any) => {
-        updatePet(petshop.id, { gender: isMale(petshop.gender) ? "F" : "M" });
-    };
-
     return (
         <main className="catalogue-page">
             <aside className="catalogue-sidebar">
@@ -126,7 +115,7 @@ const CataloguePage = ({ setLocation, data, updatePet }: any) => {
             <div className="catalogue-scroll">
             <div className="catalogue-grid">
             {catalogueData.map((petshop: any, index: any) => {
-                const imageSrc = `/Images/${petshop.id}.jpg`;
+                const imageSrc = petImageSrc(petshop.id);
 
                 return useCardView ? (
                     <Card
@@ -147,17 +136,11 @@ const CataloguePage = ({ setLocation, data, updatePet }: any) => {
                                 <i>{petshop.id}</i>
                             </div>
                             <span className="meta-line" aria-hidden="true"></span>
-                            <div className={`gender ${isMale(petshop.gender) ? 'male' : 'female'}`}
-                                onClick={() => toggleGender(petshop)}></div>
+                            <div
+                                className={`favourite-toggle ${isFavourite(petshop.favourite) ? 'liked' : 'not-liked'}`}
+                                onClick={() => toggleFavourite(petshop)}
+                            ></div>
                         </div>
-                        <div
-                            className={`favourite-toggle ${isFavourite(petshop.favourite) ? 'liked' : 'not-liked'}`}
-                            onClick={() => toggleFavourite(petshop)}
-                        ></div>
-                        <div
-                            className={`vip-toggle vip-${vipLevel(petshop.vip)}`}
-                            onClick={() => toggleVip(petshop)}
-                        ></div>
                         {formatGeneration(petshop.generation) ? (
                             <span className="generation-tag">{formatGeneration(petshop.generation)}</span>
                         ) : null}

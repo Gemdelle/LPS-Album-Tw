@@ -11,20 +11,20 @@ nav {
     position: relative;
     z-index: 999;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 0.6vh 7% 0.8vh 5.8%;
-    gap: 0.6vw;
+    padding: 0.6vh 4.5% 0.8vh 10%;
+    gap: 0.45vw;
 }
 
 .filter-container {
-    width: 52%;
+    width: 58%;
     height: auto;
     margin: 0;
     display: flex;
     flex-wrap: nowrap;
     align-items: flex-end;
-    gap: 0.35vw;
+    gap: 0.3vw;
     overflow: visible;
 }
 
@@ -66,17 +66,18 @@ nav {
 
 nav ul {
     height: auto;
-    width: 18%;
-    min-width: 12vw;
-    margin: 0;
+    width: auto;
+    min-width: 0;
+    margin: 0 0.35vw 0 0;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 0.85vw;
+    justify-content: flex-end;
+    gap: 0.9vw;
     font-family: 'Old Standard TT', serif;
     font-size: 1.05vw;
     list-style: none;
     padding: 0;
+    flex-shrink: 0;
 }
 
 nav ul li span {
@@ -99,9 +100,10 @@ nav ul li span {
     align-items: center;
     justify-content: flex-end;
     flex-wrap: nowrap;
-    width: 28%;
-    min-width: 16vw;
-    gap: 0.55vw;
+    width: auto;
+    min-width: 0;
+    flex: 0 0 auto;
+    gap: 0.45vw;
 }
 
 .header-totals {
@@ -115,8 +117,8 @@ nav ul li span {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 0 0.45vw;
+    justify-content: flex-end;
+    padding: 0 0.4vw;
     border-right: 1px solid rgb(150, 140, 110);
 }
 
@@ -126,16 +128,52 @@ nav ul li span {
 
 .header-total strong {
     font-family: 'EB Garamond', serif;
-    font-size: 1vw;
+    font-size: 1.05vw;
     color: rgb(55, 52, 40);
     line-height: 1.1;
 }
 
 .header-total span {
     font-family: 'Old Standard TT', serif;
-    font-size: 0.58vw;
-    color: rgb(90, 86, 70);
+    font-size: 0.78vw;
+    color: rgb(52, 48, 36);
     height: auto;
+    white-space: nowrap;
+}
+
+.stat-icon {
+    display: block;
+    width: 0.85vw;
+    height: 0.85vw;
+    margin-bottom: 0.08vw;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.stat-icon-named {
+    background-image: url("../assets/icons/named.png");
+}
+
+.stat-icon-not-named {
+    background-image: url("../assets/icons/not-named.png");
+}
+
+.filter-result {
+    flex: 0 0 auto;
+    min-width: 3.2vw;
+    align-items: center;
+}
+
+.filter-result strong {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05vw;
+    color: rgb(55, 52, 40);
+    line-height: 1.55vw;
+    min-height: 1.55vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .sheet-sync {

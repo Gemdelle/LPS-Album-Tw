@@ -132,22 +132,21 @@
 }
 
 .favourite-toggle {
-    position: absolute;
-    right: -0.15vw;
-    bottom: 5%;
-    height: 2vw;
-    width: 1.6vw;
+    position: static;
+    height: 1.15vw;
+    width: 1.15vw;
     z-index: 4;
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
     cursor: pointer;
     opacity: 1;
-    transition: transform 300ms ease-in-out, filter 300ms ease-in-out;
+    flex-shrink: 0;
+    transition: transform 280ms ease, filter 280ms ease;
 }
 
 .favourite-toggle:hover {
-    scale: 110%;
+    transform: scale(1.12);
 }
 
 .favourite-toggle.liked {
@@ -158,31 +157,6 @@
 .favourite-toggle.not-liked {
     background-image: url('../assets/icons/heart.png');
     filter: brightness(55%);
-}
-
-.pet-container .vip-toggle {
-    position: absolute;
-    left: -2%;
-    bottom: 6%;
-    height: 2vw;
-    width: 1.7vw;
-    z-index: 4;
-    background-image: url('../assets/icons/vip.png');
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    filter: brightness(45%);
-    transition: transform 300ms ease-in-out, filter 300ms ease-in-out;
-}
-
-.pet-container .vip-toggle:hover {
-    transform: scale(1.12);
-}
-
-.pet-container .vip-toggle.vip-1,
-.pet-container .vip-toggle.vip-2 {
-    filter: brightness(100%);
 }
 
 .unlocked {
