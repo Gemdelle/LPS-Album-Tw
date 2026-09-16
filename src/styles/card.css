@@ -187,8 +187,6 @@
     flex-shrink: 0;
 }
 
-.card-container .owned-toggle,
-.card-container .like-toggle,
 .card-container .gender-toggle {
     width: 1.35vw;
     height: 1.35vw;
@@ -196,32 +194,6 @@
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
-    cursor: pointer;
-    transition: transform 280ms ease, filter 280ms ease;
-}
-
-.card-container .owned-toggle:hover,
-.card-container .like-toggle:hover,
-.card-container .gender-toggle:hover {
-    transform: scale(1.12);
-}
-
-.card-container .owned-toggle.unlocked {
-    background-image: url("../assets/icons/owned.png");
-}
-
-.card-container .owned-toggle.locked {
-    background-image: url("../assets/icons/not-owned.png");
-}
-
-.card-container .like-toggle.liked {
-    background-image: url("../assets/icons/heart.png");
-    filter: brightness(100%);
-}
-
-.card-container .like-toggle.not-liked {
-    background-image: url("../assets/icons/heart.png");
-    filter: brightness(55%);
 }
 
 .card-container .gender-toggle.female {

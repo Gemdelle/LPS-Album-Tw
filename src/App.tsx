@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './styles/names.css';
 import Nav from './components/Nav';
 import NamesPage from './pages/NamesPage';
 import CataloguePage from './pages/CataloguePage';
+import LeaderboardPage from './pages/LeaderboardPage';
+import WishlistPage from './pages/WishlistPage';
 import GuessPage from './pages/GuessPage';
 import ProtectedRoute from "./components/ProtectedRoute";
 import localPetshops from './data/petshops_data.json';
@@ -17,7 +19,7 @@ const SHEET_GID = '0';
 const GOOGLE_SHEETS_CSV_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
 const GOOGLE_SHEETS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEdxi_rF3vMyu592vTSmjN3d2eelkSmL0QTr6gm5Aj5zergyjGHtVvSbrSXhHvCMyqcA/exec";
 
-const SHEET_HEADERS = ["id", "name", "gender", "animal", "breed", "favourite", "colour", "type", "birthday", "gifter", "bloodline", "status", "generation", "season", "pre-evolution", "post-evolution", "wishlist-link", "base", "studied", "vip"];
+const SHEET_HEADERS = ["id", "name", "gender", "animal", "breed", "favourite", "colour", "type", "birthday", "gifter", "bloodline", "status", "generation", "season", "pre-evolution", "post-evolution", "wishlist-link", "base", "studied", "vip", "adopter"];
 
 function parseCsv(text: string): string[][] {
   const rows: string[][] = [];
@@ -110,14 +112,18 @@ function App() {
   const sourceDataRef = useRef<any[]>([]);
   sourceDataRef.current = sourceData;
 
-  const catalogueData = useMemo(
-    () => applyCatalogueFilters(sourceData, filters),
-    [sourceData, filters]
-  );
-  const petShopData = useMemo(
-    () => sourceData.filter((item: any) => item.status === "OWNED"),
+  const ownedData = useMemo(
+    () => sourceData.filter((item: any) =>
+      String(item.status || "").trim().toUpperCase() === "OWNED"
+      && String(item.name || "").trim() !== ""
+    ),
     [sourceData]
   );
+  const catalogueData = useMemo(
+    () => applyCatalogueFilters(ownedData, filters),
+    [ownedData, filters]
+  );
+  const petShopData = ownedData;
 
   const patchFilters = (partial: Partial<CatalogueFilters>) => {
     setFilters((prev) => ({ ...prev, ...partial }));
@@ -265,10 +271,10 @@ function App() {
       <div className="App">
         <div className="container">
           <div className="router">
-            <BrowserRouter basename={process.env.PUBLIC_URL}>
+            <BrowserRouter basename={process.env.PUBLIC_URL === "." ? "" : process.env.PUBLIC_URL}>
               <Nav
-                  rawData={sourceData}
-                  defaultData={sourceData}
+                  rawData={ownedData}
+                  defaultData={ownedData}
                   filters={filters}
                   patchFilters={patchFilters}
                   filteredCount={catalogueData.length}
@@ -285,11 +291,18 @@ function App() {
                           setLocation={setLocation}
                           setSelectedPetShop={setSelectedPetShop}
                           selectedPetShop={selectedPetShop}
-                          updateGoogleSheet={updateGoogleSheet}
-                          refreshData={fetchDataFromGoogleSheets}
-                          updatePet={updatePet}
                       />
                     }
+                />
+                <Route
+                    path="/leaderboard"
+                    element={
+                      <LeaderboardPage setLocation={setLocation} data={catalogueData} />
+                    }
+                />
+                <Route
+                    path="/wishlist"
+                    element={<WishlistPage setLocation={setLocation} />}
                 />
                 <Route
                     path="/guess-game"
@@ -316,6 +329,7 @@ function App() {
                           />
                       } />
               </Route>
+              <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </BrowserRouter>
           </div>

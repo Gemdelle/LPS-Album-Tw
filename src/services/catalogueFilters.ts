@@ -4,7 +4,6 @@ export type CatalogueFilters = {
     nameQuery: string;
     nameMode: number;
     nameWords: number;
-    owned: string[];
     gifter: string;
     years: string[];
     colours: string[];
@@ -22,7 +21,6 @@ export const EMPTY_FILTERS: CatalogueFilters = {
     nameQuery: "",
     nameMode: 0,
     nameWords: 0,
-    owned: [],
     gifter: "",
     years: [],
     colours: [],
@@ -60,7 +58,6 @@ function numericId(id: unknown) {
 
 export function applyCatalogueFilters(data: any[], filters: CatalogueFilters) {
     const query = filters.nameQuery.trim().toLowerCase();
-    const owned = new Set(filters.owned);
     const years = new Set(filters.years);
     const colours = new Set(filters.colours);
     const genders = new Set(filters.genders);
@@ -81,9 +78,6 @@ export function applyCatalogueFilters(data: any[], filters: CatalogueFilters) {
             return false;
         }
         if (query && !name.toLowerCase().includes(query)) {
-            return false;
-        }
-        if (owned.size > 0 && !owned.has(String(pet.status || "").toUpperCase())) {
             return false;
         }
         if (filters.gifter && normalizeKey(pet.gifter) !== filters.gifter) {

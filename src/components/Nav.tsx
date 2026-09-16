@@ -10,13 +10,8 @@ import AnimalFilter from "./AnimalFilter";
 import BreedFilter from "./BreedFilter";
 import GiftersFilter from "./GiftersFilter";
 import GenerationFilter from "./GenerationFilter";
-import OwnedFilter from "./OwnedFilter";
-import NamedFilter from "./NamedFilter";
 
 const Nav = ({ rawData, defaultData, filters, patchFilters, filteredCount, lastSheetSync, isRefreshingSheet, onRefreshSheet }: any) => {
-    const totalOwned = rawData.filter((data: any) => data.status == "OWNED");
-    const totalNotOwned = rawData.filter((data: any) => data.status == "NOT_OWNED");
-    const totalNotNamedOwned = totalOwned.filter((data: any) => data.name == "");
     const totalNamed = rawData.filter((data: any) => String(data.name || "").trim() !== "");
     const totalNotNamed = rawData.filter((data: any) => String(data.name || "").trim() === "");
 
@@ -25,18 +20,19 @@ const Nav = ({ rawData, defaultData, filters, patchFilters, filteredCount, lastS
             <ul className="navholder">
                 <li className='link'>
                     <NavLink style={{ textDecoration: 'none' }} to="/" className={({ isActive }) => `${isActive ? "active" : ""}`}>
-                        <span>Catalogue</span>
+                        <span>Adopt</span>
                     </NavLink>
                 </li>
                 <li className='link'>
                     <NavLink style={{ textDecoration: 'none' }} to="/guess-game"><span>Game</span></NavLink>
                 </li>
+                <li className='link'>
+                    <NavLink style={{ textDecoration: 'none' }} to="/wishlist"><span>Wishlist</span></NavLink>
+                </li>
             </ul>
 
             <div className='filter-container'>
                 <NameFilter filters={filters} patchFilters={patchFilters} />
-                <NamedFilter filters={filters} patchFilters={patchFilters} />
-                <OwnedFilter filters={filters} patchFilters={patchFilters} />
                 <YearsFilter filters={filters} patchFilters={patchFilters} />
                 <ColoursFilter filters={filters} patchFilters={patchFilters} />
                 <IdFilter filters={filters} patchFilters={patchFilters} />
@@ -57,18 +53,6 @@ const Nav = ({ rawData, defaultData, filters, patchFilters, filteredCount, lastS
                     <div className="header-total">
                         <strong>{rawData.length}</strong>
                         <span>Total</span>
-                    </div>
-                    <div className="header-total">
-                        <strong>{totalOwned.length}</strong>
-                        <span>Owned</span>
-                    </div>
-                    <div className="header-total">
-                        <strong>{totalNotOwned.length}</strong>
-                        <span>To get</span>
-                    </div>
-                    <div className="header-total">
-                        <strong>{totalNotNamedOwned.length}</strong>
-                        <span>Missing</span>
                     </div>
                     <div className="header-total">
                         <i className="stat-icon stat-icon-named" />
