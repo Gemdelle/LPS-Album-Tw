@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles/names.css';
 import Nav from './components/Nav';
 import NamesPage from './pages/NamesPage';
@@ -265,7 +265,7 @@ function App() {
       <div className="App">
         <div className="container">
           <div className="router">
-            <HashRouter>
+            <BrowserRouter basename={process.env.PUBLIC_URL}>
               <Nav
                   rawData={sourceData}
                   defaultData={sourceData}
@@ -317,7 +317,7 @@ function App() {
                       } />
               </Route>
               </Routes>
-            </HashRouter>
+            </BrowserRouter>
           </div>
         </div>
       </div>
