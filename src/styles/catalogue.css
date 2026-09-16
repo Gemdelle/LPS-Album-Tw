@@ -49,16 +49,15 @@
 
 .view-button span {
     position: absolute;
-    width: 42%;
-    height: 58%;
+    width: 46%;
+    height: 54%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Old Standard TT', serif;
     font-style: italic;
     font-weight: bold;
-    font-size: 0.82vw;
-    line-height: 1.05;
+    font-size: 1vw;
     text-align: center;
     color: rgb(72, 64, 44);
     writing-mode: vertical-rl;
@@ -66,17 +65,17 @@
 }
 
 .view-button.leaderboard-tab span {
-    font-size: 0.7vw;
+    font-size: 1vw;
     letter-spacing: 0.04vw;
 }
 
 .view-button.catalogue-tab {
-    background-image: url('../assets/catalogue-frame.png');
+    background-image: url('../assets/adopt-frame.png');
     margin-top: 6.8vh;
 }
 
 .view-button.leaderboard-tab {
-    background-image: url('../assets/cards-frame.png');
+    background-image: url('../assets/leaderboard-frame.png');
 }
 
 .active-view-button {

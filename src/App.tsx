@@ -12,6 +12,8 @@ import localPetshops from './data/petshops_data.json';
 import { applyOverrides, clearOverrides, mergePet, saveOverride } from './services/petOverrides';
 import { applyCatalogueFilters, CatalogueFilters, EMPTY_FILTERS } from './services/catalogueFilters';
 import { isCacheFresh, loadSheetCache, patchSheetCache, saveSheetCache } from './services/sheetCache';
+import { parseCsv } from './services/parseCsv';
+import { fetchTwitchSheet, mergeTwitchFields } from './services/twitchSheet';
 
 // Spreadsheet público: https://docs.google.com/spreadsheets/d/1wo8iJYUg_1tjJbJ_RnFbSk-cHmMgV2s3MlmYcRvMACg
 const SPREADSHEET_ID = '1wo8iJYUg_1tjJbJ_RnFbSk-cHmMgV2s3MlmYcRvMACg';
@@ -19,51 +21,7 @@ const SHEET_GID = '0';
 const GOOGLE_SHEETS_CSV_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
 const GOOGLE_SHEETS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEdxi_rF3vMyu592vTSmjN3d2eelkSmL0QTr6gm5Aj5zergyjGHtVvSbrSXhHvCMyqcA/exec";
 
-const SHEET_HEADERS = ["id", "name", "gender", "animal", "breed", "favourite", "colour", "type", "birthday", "gifter", "bloodline", "status", "generation", "season", "pre-evolution", "post-evolution", "wishlist-link", "base", "studied", "vip", "adopter"];
-
-function parseCsv(text: string): string[][] {
-  const rows: string[][] = [];
-  let row: string[] = [];
-  let cell = "";
-  let inQuotes = false;
-
-  for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-    if (inQuotes) {
-      if (char === '"') {
-        if (text[i + 1] === '"') {
-          cell += '"';
-          i += 1;
-        } else {
-          inQuotes = false;
-        }
-      } else {
-        cell += char;
-      }
-    } else if (char === '"') {
-      inQuotes = true;
-    } else if (char === ",") {
-      row.push(cell.trim());
-      cell = "";
-    } else if (char === "\n") {
-      row.push(cell.trim());
-      if (row.some((value) => value !== "")) {
-        rows.push(row);
-      }
-      row = [];
-      cell = "";
-    } else if (char !== "\r") {
-      cell += char;
-    }
-  }
-
-  if (cell !== "" || row.length > 0) {
-    row.push(cell.trim());
-    rows.push(row);
-  }
-
-  return rows;
-}
+const SHEET_HEADERS = ["id", "name", "gender", "animal", "breed", "favourite", "colour", "type", "birthday", "gifter", "bloodline", "status", "generation", "season", "pre-evolution", "post-evolution", "wishlist-link", "base", "studied", "vip"];
 
 function normalizeSheetValue(header: string, value: string) {
   if (header === "favourite" || header === "studied" || header === "base") {
@@ -174,10 +132,18 @@ function App() {
                 throw new Error("Google Sheets returned no rows.");
             }
 
-            console.log("Fetched data:", data.length, "pets from spreadsheet");
-            saveSheetCache(data);
+            let twitchById = {} as Awaited<ReturnType<typeof fetchTwitchSheet>>;
+            try {
+                twitchById = await fetchTwitchSheet();
+            } catch (twitchError) {
+                console.warn("TWITCH sheet fetch failed:", twitchError);
+            }
+
+            const merged = mergeTwitchFields(data, twitchById);
+            console.log("Fetched data:", merged.length, "pets from spreadsheet");
+            saveSheetCache(merged);
             setLastSheetSync(Date.now());
-            return data;
+            return merged;
         } catch (error) {
             const staleCache = loadSheetCache();
             if (staleCache?.data?.length) {
@@ -186,7 +152,12 @@ function App() {
                 return applyOverrides(staleCache.data);
             }
             console.warn(`Using local petshops data. Google Sheets fetch failed for ${SPREADSHEET_ID}:`, error);
-            return applyOverrides(localPetshops as any[]);
+            try {
+                const twitchById = await fetchTwitchSheet();
+                return mergeTwitchFields(applyOverrides(localPetshops as any[]), twitchById);
+            } catch {
+                return applyOverrides(localPetshops as any[]);
+            }
         }
     };
 
@@ -240,6 +211,12 @@ function App() {
         setSourceData(applyOverrides(cached.data));
         setLastSheetSync(cached.fetchedAt);
         if (isCacheFresh(cached.fetchedAt)) {
+          try {
+            const twitchById = await fetchTwitchSheet();
+            setSourceData((prev) => mergeTwitchFields(prev, twitchById));
+          } catch (twitchError) {
+            console.warn("TWITCH sheet fetch failed:", twitchError);
+          }
           return;
         }
       }

@@ -41,6 +41,7 @@ const PetAdoptionRow = ({ pet, mode }: { pet: any; mode: "adopt" | "leaderboard"
         { label: "Gifter", value: pet.gifter || "-" },
     ];
     const adopter = String(pet.adopter || "").trim();
+    const price = pet.price === 0 || pet.price ? pet.price : "—";
 
     const onAdopt = (event: React.FormEvent) => {
         event.preventDefault();
@@ -108,7 +109,7 @@ const PetAdoptionRow = ({ pet, mode }: { pet: any; mode: "adopt" | "leaderboard"
                 {mode === "adopt" ? (
                     <form className="pet-adopt" onSubmit={onAdopt}>
                         <div className="pet-coin">
-                            <span className="pet-coin-price">12000</span>
+                            <span className="pet-coin-price">{price}</span>
                             <img src={ASSETS.coin} alt="" />
                             <span className="pet-coin-help">
                                 ?
@@ -136,7 +137,7 @@ const PetAdoptionRow = ({ pet, mode }: { pet: any; mode: "adopt" | "leaderboard"
                 ) : (
                     <div className="pet-adopt">
                         <div className="pet-coin">
-                            <span className="pet-coin-price">12000</span>
+                            <span className="pet-coin-price">{price}</span>
                             <img src={ASSETS.coin} alt="" />
                             <span className="pet-coin-help">
                                 ?

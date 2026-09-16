@@ -12,8 +12,8 @@ import GiftersFilter from "./GiftersFilter";
 import GenerationFilter from "./GenerationFilter";
 
 const Nav = ({ rawData, defaultData, filters, patchFilters, filteredCount, lastSheetSync, isRefreshingSheet, onRefreshSheet }: any) => {
-    const totalNamed = rawData.filter((data: any) => String(data.name || "").trim() !== "");
-    const totalNotNamed = rawData.filter((data: any) => String(data.name || "").trim() === "");
+    const totalAdopted = rawData.filter((data: any) => String(data.adopter || "").trim() !== "");
+    const totalNotAdopted = rawData.filter((data: any) => String(data.adopter || "").trim() === "");
 
     return (
         <nav>
@@ -56,13 +56,13 @@ const Nav = ({ rawData, defaultData, filters, patchFilters, filteredCount, lastS
                     </div>
                     <div className="header-total">
                         <i className="stat-icon stat-icon-named" />
-                        <strong>{totalNamed.length}</strong>
-                        <span>Named</span>
+                        <strong>{totalAdopted.length}</strong>
+                        <span>Adopted</span>
                     </div>
                     <div className="header-total">
                         <i className="stat-icon stat-icon-not-named" />
-                        <strong>{totalNotNamed.length}</strong>
-                        <span>Not named</span>
+                        <strong>{totalNotAdopted.length}</strong>
+                        <span>Not adopted</span>
                     </div>
                 </div>
                 <div className="sheet-sync">

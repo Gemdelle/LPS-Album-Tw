@@ -1,7 +1,7 @@
 import { mergePet } from "./petOverrides";
 import type { PetPatch } from "./petOverrides";
 
-const CACHE_KEY = "lps-sheet-cache-v1";
+const CACHE_KEY = "lps-sheet-cache-v2";
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
 type SheetCache = {
