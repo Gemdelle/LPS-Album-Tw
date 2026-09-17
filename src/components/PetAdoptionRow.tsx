@@ -7,12 +7,12 @@ import genderM from "../assets/icons/M-gem.png";
 import squareFrame from "../assets/square-pet-frame.png";
 
 const GIF_SRC = [
-    `${process.env.PUBLIC_URL}/giphs/spadabeccia_1_idle.gif`,
-    `${process.env.PUBLIC_URL}/giphs/spadabeccia-2.gif`,
-    `${process.env.PUBLIC_URL}/giphs/spadabeccia-3.gif`,
-    `${process.env.PUBLIC_URL}/giphs/spadabeccia-4.gif`,
-    `${process.env.PUBLIC_URL}/giphs/spadabeccia-5.gif`,
-    `${process.env.PUBLIC_URL}/giphs/spadabeccia-6.gif`,
+    `${process.env.PUBLIC_URL}/giphs/spadabeccia/spadabeccia_1_idle.gif`,
+    `${process.env.PUBLIC_URL}/giphs/spadabeccia/spadabeccia-2.gif`,
+    `${process.env.PUBLIC_URL}/giphs/spadabeccia/spadabeccia-3.gif`,
+    `${process.env.PUBLIC_URL}/giphs/spadabeccia/spadabeccia-4.gif`,
+    `${process.env.PUBLIC_URL}/giphs/spadabeccia/spadabeccia-5.gif`,
+    `${process.env.PUBLIC_URL}/giphs/spadabeccia/spadabeccia-6.gif`,
 ];
 
 const ASSETS = {
