@@ -30,7 +30,7 @@ async function redeemByGet(payload: { id: string | number; twitchName: string; c
         code: payload.code
     });
     const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), 12000);
+    const timer = window.setTimeout(() => controller.abort(), 60000);
     try {
         const response = await fetch(`${ADOPT_SCRIPT_URL}?${query.toString()}`, {
             method: "GET",
@@ -56,6 +56,9 @@ export async function redeemAdoption(payload: {
         const json = await redeemByGet(payload);
         if (isRedeemPayload(json)) {
             return json;
+        }
+        if (json && (json.service === "lps-twitch-adopt" || json.error === "use_post")) {
+            return { ok: false, error: "timeout" };
         }
     } catch {
         /* fallback: POST + hoja */
@@ -112,7 +115,7 @@ export function redeemErrorMessage(error?: string) {
         case "not_named":
             return "Este pet no se puede adoptar.";
         case "timeout":
-            return "No se pudo confirmar. Revisá nick, código, y que el Apps Script esté publicado.";
+            return "El script tardó o no contestó. Esperá unos segundos y probá de nuevo.";
         default:
             return "No se pudo adoptar. Probá de nuevo.";
     }
