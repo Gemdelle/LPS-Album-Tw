@@ -216,6 +216,7 @@ const PetAdoptionRow = ({ pet, mode, onAdopted }: { pet: any; mode: "adopt" | "l
                         >
                             <img src={ASSETS.adoptBtn} alt="ADOPT ME" />
                         </button>
+                        {message ? <div className="pet-adopt-status">{message}</div> : null}
                     </form>
                 ) : (
                     <div className="pet-adopt">
@@ -234,7 +235,7 @@ const PetAdoptionRow = ({ pet, mode, onAdopted }: { pet: any; mode: "adopt" | "l
                     </div>
                 )}
             </div>
-            {message ? <div className="pet-adopt-banner">{message}</div> : null}
+            {message ? <div className="pet-adopt-toast">{message}</div> : null}
         </div>
     );
 };

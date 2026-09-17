@@ -384,6 +384,7 @@
     align-items: center;
     justify-content: flex-start;
     gap: 0;
+    pointer-events: none;
 }
 
 .pet-rarity {
@@ -766,20 +767,34 @@
     display: none;
 }
 
-.pet-adopt-banner {
-    position: absolute;
-    left: 50%;
-    bottom: 6%;
-    transform: translateX(-50%);
-    z-index: 40;
-    min-width: 36%;
-    padding: 0.45vw 1vw;
+.pet-adopt-status {
+    width: 90%;
+    margin-top: 4%;
+    padding: 0.25vw 0.35vw;
     background: #1a1610;
     border: 1px solid #e6d3a6;
     color: #ffe08a;
     font-family: 'Old Standard TT', serif;
     font-style: italic;
-    font-size: 1.05vw;
+    font-size: 0.78vw;
+    text-align: center;
+    z-index: 8;
+}
+
+.pet-adopt-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 6%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    min-width: 28vw;
+    padding: 0.7vw 1.4vw;
+    background: #1a1610;
+    border: 1px solid #e6d3a6;
+    color: #ffe08a;
+    font-family: 'Old Standard TT', serif;
+    font-style: italic;
+    font-size: 1.2vw;
     text-align: center;
     pointer-events: none;
 }

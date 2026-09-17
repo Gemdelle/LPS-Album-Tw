@@ -42,7 +42,7 @@ function doGet(e) {
       return json_({ ok: true, service: "lps-twitch-adopt" });
     }
     if (action === "redeem") {
-      return json_({ ok: false, error: "use_post" });
+      return json_(redeem_(p));
     }
     if (!checkSecret_(p.secret)) {
       return json_({ ok: false, error: "unauthorized" });

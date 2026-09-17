@@ -7,6 +7,7 @@ export type RedeemResult = {
     id?: string;
     adopter?: string;
     error?: string;
+    service?: string;
 };
 
 function sleep(ms: number) {
@@ -15,6 +16,31 @@ function sleep(ms: number) {
 
 function nick(value: string) {
     return value.trim().replace(/^@/, "").toLowerCase();
+}
+
+function isRedeemPayload(json: RedeemResult | null) {
+    return Boolean(json && typeof json.ok === "boolean" && json.service !== "lps-twitch-adopt" && json.error !== "use_post");
+}
+
+async function redeemByGet(payload: { id: string | number; twitchName: string; code: string }) {
+    const query = new URLSearchParams({
+        action: "redeem",
+        id: String(payload.id),
+        twitchName: payload.twitchName,
+        code: payload.code
+    });
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 12000);
+    try {
+        const response = await fetch(`${ADOPT_SCRIPT_URL}?${query.toString()}`, {
+            method: "GET",
+            redirect: "follow",
+            signal: controller.signal
+        });
+        return JSON.parse(await response.text()) as RedeemResult;
+    } finally {
+        window.clearTimeout(timer);
+    }
 }
 
 export async function redeemAdoption(payload: {
@@ -26,45 +52,35 @@ export async function redeemAdoption(payload: {
         return { ok: false, error: "script_not_configured" };
     }
 
+    try {
+        const json = await redeemByGet(payload);
+        if (isRedeemPayload(json)) {
+            return json;
+        }
+    } catch {
+        /* fallback: POST + hoja */
+    }
+
     const body = JSON.stringify({
         action: "redeem",
         id: payload.id,
         twitchName: payload.twitchName,
         code: payload.code
     });
-    const post = {
-        method: "POST" as const,
+    void fetch(ADOPT_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body
-    };
-
-    void fetch(ADOPT_SCRIPT_URL, { ...post, mode: "no-cors" });
-
-    try {
-        const controller = new AbortController();
-        const timer = window.setTimeout(() => controller.abort(), 8000);
-        const response = await fetch(ADOPT_SCRIPT_URL, {
-            ...post,
-            redirect: "follow",
-            signal: controller.signal
-        });
-        window.clearTimeout(timer);
-        const json = JSON.parse(await response.text()) as RedeemResult & { service?: string };
-        if (json && typeof json.ok === "boolean" && json.service !== "lps-twitch-adopt") {
-            return json;
-        }
-    } catch {
-        /* Google a veces come el POST; confirmamos en la hoja TWITCH. */
-    }
+    });
 
     const wanted = nick(payload.twitchName);
     const id = String(payload.id);
-    const deadline = Date.now() + 14000;
+    const deadline = Date.now() + 10000;
     while (Date.now() < deadline) {
-        await sleep(1200);
+        await sleep(1000);
         try {
-            const map = await fetchTwitchSheet();
-            const extra = map[id];
+            const extra = (await fetchTwitchSheet())[id];
             if (extra?.adopter) {
                 if (nick(extra.adopter) === wanted) {
                     return { ok: true, id, adopter: extra.adopter };
@@ -72,7 +88,7 @@ export async function redeemAdoption(payload: {
                 return { ok: false, error: "already_adopted" };
             }
         } catch {
-            /* seguir intentando */
+            /* seguir */
         }
     }
     return { ok: false, error: "timeout" };
@@ -96,7 +112,7 @@ export function redeemErrorMessage(error?: string) {
         case "not_named":
             return "Este pet no se puede adoptar.";
         case "timeout":
-            return "No se confirmó en la hoja. Código mal, o falta republicar el Apps Script (Deploy → New version).";
+            return "No se pudo confirmar. Revisá nick, código, y que el Apps Script esté publicado.";
         default:
             return "No se pudo adoptar. Probá de nuevo.";
     }
