@@ -3,6 +3,7 @@ import { parseCsv } from "./parseCsv";
 export type TwitchPetFields = {
     adopter: string;
     price: string | number;
+    rarity: string | number;
 };
 
 const SPREADSHEET_ID = "1wo8iJYUg_1tjJbJ_RnFbSk-cHmMgV2s3MlmYcRvMACg";
@@ -22,6 +23,7 @@ export function parseTwitchSheet(text: string) {
     const idIdx = headerIndex(headers, ["id"]);
     const adopterIdx = headerIndex(headers, ["adopter"]);
     const priceIdx = headerIndex(headers, ["price"]);
+    const rarityIdx = headerIndex(headers, ["rarity"]);
 
     if (idIdx === -1) {
         return {} as Record<string, TwitchPetFields>;
@@ -36,18 +38,22 @@ export function parseTwitchSheet(text: string) {
         const adopter = adopterIdx === -1 ? "" : String(row[adopterIdx] || "").replace(/"/g, "").trim();
         const priceRaw = priceIdx === -1 ? "" : String(row[priceIdx] || "").replace(/"/g, "").trim();
         const price = priceRaw !== "" && !Number.isNaN(Number(priceRaw)) ? Number(priceRaw) : priceRaw;
-        byId[id] = { adopter, price };
+        const rarityRaw = rarityIdx === -1 ? "" : String(row[rarityIdx] || "").replace(/"/g, "").trim();
+        const rarity = rarityRaw !== "" && !Number.isNaN(Number(rarityRaw)) ? Number(rarityRaw) : rarityRaw;
+        byId[id] = { adopter, price, rarity };
     });
     return byId;
 }
 
 export function mergeTwitchFields(pets: any[], twitchById: Record<string, TwitchPetFields>) {
     return pets.map((pet) => {
-        const extra = twitchById[String(pet.id)] || { adopter: "", price: "" };
+        const extra = twitchById[String(pet.id)] || { adopter: "", price: "", rarity: "" };
+        const rarity = extra.rarity === 0 || extra.rarity ? extra.rarity : pet.rarity;
         return {
             ...pet,
             adopter: extra.adopter,
             price: extra.price,
+            rarity,
         };
     });
 }

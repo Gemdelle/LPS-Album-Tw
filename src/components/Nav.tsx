@@ -10,6 +10,7 @@ import AnimalFilter from "./AnimalFilter";
 import BreedFilter from "./BreedFilter";
 import GiftersFilter from "./GiftersFilter";
 import GenerationFilter from "./GenerationFilter";
+import RarityFilter from "./RarityFilter";
 
 const Nav = ({ rawData, defaultData, filters, patchFilters, filteredCount, lastSheetSync, isRefreshingSheet, onRefreshSheet }: any) => {
     const totalAdopted = rawData.filter((data: any) => String(data.adopter || "").trim() !== "");
@@ -42,6 +43,7 @@ const Nav = ({ rawData, defaultData, filters, patchFilters, filteredCount, lastS
                 <AnimalFilter filters={filters} patchFilters={patchFilters} defaultData={defaultData} />
                 <BreedFilter filters={filters} patchFilters={patchFilters} defaultData={defaultData} />
                 <GiftersFilter filters={filters} patchFilters={patchFilters} defaultData={defaultData} />
+                <RarityFilter filters={filters} patchFilters={patchFilters} />
                 <div className="header-filter filter-result">
                     <label>Results</label>
                     <strong>{filteredCount ?? 0}</strong>

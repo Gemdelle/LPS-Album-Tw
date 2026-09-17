@@ -209,7 +209,7 @@
 
 /* bloque nombre + stats + gifs */
 .pet-middle {
-    width: 62%;
+    width: 56%;
     height: 92%;
     display: flex;
     flex-direction: column;
@@ -375,11 +375,232 @@
     pointer-events: none;
 }
 
+.pet-rarity-wrap {
+    width: 11%;
+    height: 92%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+}
+
+.pet-rarity {
+    position: relative;
+    z-index: 4;
+    width: 40%;
+    height: 100%;
+    flex-shrink: 0;
+    margin-right: -6%;
+}
+
+.pet-rarity-bar {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.pet-rarity-slots {
+    position: absolute;
+    left: 16%;
+    right: 16%;
+    top: 10%;
+    bottom: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.pet-rarity-slot {
+    width: 100%;
+    height: 18%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pet-rarity-slot img {
+    width: 92%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.pet-rarity-hero {
+    width: 66%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    --glow: rgba(230, 211, 166, 0.35);
+    --spark: #efe8d4;
+}
+
+.pet-rarity-hero--1 {
+    --glow: rgba(168, 122, 78, 0.45);
+    --spark: #d7b48a;
+}
+
+.pet-rarity-hero--2 {
+    --glow: rgba(255, 132, 28, 0.45);
+    --spark: #ffc56a;
+}
+
+.pet-rarity-hero--3 {
+    --glow: rgba(214, 186, 150, 0.45);
+    --spark: #f3e6d0;
+}
+
+.pet-rarity-hero--4 {
+    --glow: rgba(255, 176, 214, 0.4);
+    --spark: #fff4dc;
+}
+
+.pet-rarity-hero--5 {
+    --glow: rgba(220, 36, 82, 0.5);
+    --spark: #ff9ab8;
+}
+
+.pet-rarity-hero-title {
+    font-family: 'Old Standard TT', serif;
+    font-style: italic;
+    font-size: 0.85vw;
+    letter-spacing: 0.04vw;
+    color: #e6d3a6;
+    margin-bottom: 8%;
+    white-space: nowrap;
+    text-shadow: 0 0 0.25vw rgba(0, 0, 0, 0.65);
+}
+
+.pet-rarity-hero-empty {
+    color: #c4a574;
+    font-family: 'Old Standard TT', serif;
+    font-size: 1.2vw;
+}
+
+.pet-rarity-jewel {
+    position: relative;
+    width: 74%;
+    height: 44%;
+    margin-top: 4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: jewel-bob 3.4s ease-in-out infinite;
+}
+
+.pet-rarity-jewel img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    animation: jewel-tilt 5.2s ease-in-out infinite;
+    filter: drop-shadow(0 0 0.18vw var(--glow));
+}
+
+.pet-rarity-jewel em {
+    position: absolute;
+    top: 28%;
+    left: 34%;
+    width: 18%;
+    height: 22%;
+    pointer-events: none;
+    background: linear-gradient(118deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+    background-size: 180% 100%;
+    animation: jewel-shine 3.8s ease-in-out infinite;
+    mix-blend-mode: screen;
+    opacity: 0.4;
+    border-radius: 40%;
+}
+
+.pet-rarity-jewel i {
+    position: absolute;
+    width: 0.12vw;
+    height: 0.12vw;
+    border-radius: 50%;
+    background: var(--spark);
+    box-shadow: 0 0 0.18vw var(--glow);
+    pointer-events: none;
+    animation: jewel-spark 2.6s ease-in-out infinite;
+}
+
+.pet-rarity-jewel .s1 {
+    top: 18%;
+    left: 22%;
+    animation-delay: 0s;
+}
+
+.pet-rarity-jewel .s2 {
+    top: 42%;
+    right: 16%;
+    animation-delay: 0.7s;
+}
+
+.pet-rarity-jewel .s3 {
+    bottom: 22%;
+    left: 38%;
+    animation-delay: 1.4s;
+}
+
+@keyframes jewel-bob {
+    0%,
+    100% {
+        transform: translateY(12%);
+    }
+    50% {
+        transform: translateY(2%);
+    }
+}
+
+@keyframes jewel-tilt {
+    0%,
+    100% {
+        transform: rotate(-7deg);
+    }
+    50% {
+        transform: rotate(8deg);
+    }
+}
+
+@keyframes jewel-shine {
+    0%,
+    100% {
+        background-position: 120% 0;
+        opacity: 0.08;
+    }
+    45% {
+        background-position: -20% 0;
+        opacity: 0.35;
+    }
+}
+
+@keyframes jewel-spark {
+    0%,
+    100% {
+        opacity: 0;
+        transform: scale(0.4);
+    }
+    40% {
+        opacity: 0.85;
+        transform: scale(1);
+    }
+    70% {
+        opacity: 0.15;
+        transform: scale(0.6);
+    }
+}
+
 /* adopt derecha */
 .pet-adopt {
     position: relative;
     z-index: 5;
-    width: 20%;
+    width: 16%;
     height: 92%;
     display: flex;
     flex-direction: column;

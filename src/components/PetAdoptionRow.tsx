@@ -21,7 +21,17 @@ const ASSETS = {
     adoptBtn: `${process.env.PUBLIC_URL}/Images/adoption/adopt-me-btn.png`,
     vDiv: `${process.env.PUBLIC_URL}/Images/adoption/division-vertical.png`,
     hDiv: `${process.env.PUBLIC_URL}/Images/adoption/division-horizontal.png`,
+    rarityBar: `${process.env.PUBLIC_URL}/Images/rarity/rarity-bar.png`,
+    rarityGem: (level: number) => `${process.env.PUBLIC_URL}/Images/rarity/rarity-${level}.png`,
 };
+
+function rarityLevel(value: unknown) {
+    const n = Number(value);
+    if (!Number.isFinite(n) || n < 1) {
+        return 0;
+    }
+    return Math.min(5, Math.round(n));
+}
 
 const LEFT_STATS = [
     { label: "N°", key: "id" },
@@ -45,6 +55,7 @@ const PetAdoptionRow = ({ pet, mode, onAdopted }: { pet: any; mode: "adopt" | "l
     ];
     const adopter = String(pet.adopter || "").trim();
     const price = pet.price === 0 || pet.price ? pet.price : "—";
+    const rarity = rarityLevel(pet.rarity);
 
     const onAdopt = async (event?: React.FormEvent) => {
         event?.preventDefault();
@@ -140,6 +151,35 @@ const PetAdoptionRow = ({ pet, mode, onAdopted }: { pet: any; mode: "adopt" | "l
                 </div>
 
                 <img className="pet-vdiv pet-vdiv-adopt" src={ASSETS.vDiv} alt="" />
+
+                <div className="pet-rarity-wrap">
+                    <div className="pet-rarity" aria-label={`Rarity ${rarity || 0}`}>
+                        <img className="pet-rarity-bar" src={ASSETS.rarityBar} alt="" />
+                        <div className="pet-rarity-slots">
+                            {[5, 4, 3, 2, 1].map((level) => (
+                                <span className="pet-rarity-slot" key={level}>
+                                    {rarity >= level ? (
+                                        <img src={ASSETS.rarityGem(level)} alt="" />
+                                    ) : null}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                    <div className={`pet-rarity-hero pet-rarity-hero--${rarity || 0}`}>
+                        <span className="pet-rarity-hero-title">Rarity {rarity || "—"}</span>
+                        {rarity > 0 ? (
+                            <div className="pet-rarity-jewel">
+                                <img src={ASSETS.rarityGem(rarity)} alt="" />
+                                <em />
+                                <i className="s1" />
+                                <i className="s2" />
+                                <i className="s3" />
+                            </div>
+                        ) : (
+                            <span className="pet-rarity-hero-empty">—</span>
+                        )}
+                    </div>
+                </div>
 
                 {mode === "adopt" && !adopter ? (
                     <form className="pet-adopt" onSubmit={onAdopt}>

@@ -15,6 +15,7 @@ export type CatalogueFilters = {
     animals: string[];
     breeds: string[];
     generations: string[];
+    rarities: string[];
 };
 
 export const EMPTY_FILTERS: CatalogueFilters = {
@@ -32,6 +33,7 @@ export const EMPTY_FILTERS: CatalogueFilters = {
     animals: [],
     breeds: [],
     generations: [],
+    rarities: [],
 };
 
 export function generationKey(value: unknown) {
@@ -65,6 +67,7 @@ export function applyCatalogueFilters(data: any[], filters: CatalogueFilters) {
     const animals = new Set(filters.animals);
     const breeds = new Set(filters.breeds);
     const generations = new Set(filters.generations);
+    const rarities = new Set(filters.rarities);
 
     return data.filter((pet) => {
         const name = String(pet.name || "");
@@ -113,6 +116,12 @@ export function applyCatalogueFilters(data: any[], filters: CatalogueFilters) {
         }
         if (generations.size > 0 && !generations.has(generationKey(pet.generation))) {
             return false;
+        }
+        if (rarities.size > 0) {
+            const rarity = Math.min(5, Math.max(0, Math.round(Number(pet.rarity) || 0)));
+            if (!rarities.has(String(rarity))) {
+                return false;
+            }
         }
         return true;
     });

@@ -21,7 +21,7 @@ const SHEET_GID = '0';
 const GOOGLE_SHEETS_CSV_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
 const GOOGLE_SHEETS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEdxi_rF3vMyu592vTSmjN3d2eelkSmL0QTr6gm5Aj5zergyjGHtVvSbrSXhHvCMyqcA/exec";
 
-const SHEET_HEADERS = ["id", "name", "gender", "animal", "breed", "favourite", "colour", "type", "birthday", "gifter", "bloodline", "status", "generation", "season", "pre-evolution", "post-evolution", "wishlist-link", "base", "studied", "vip"];
+const SHEET_HEADERS = ["id", "name", "gender", "animal", "breed", "favourite", "colour", "type", "birthday", "gifter", "bloodline", "status", "generation", "season", "pre-evolution", "post-evolution", "wishlist-link", "base", "studied", "vip", "rarity"];
 
 function normalizeSheetValue(header: string, value: string) {
   if (header === "favourite" || header === "studied" || header === "base") {
@@ -77,9 +77,21 @@ function App() {
     ),
     [sourceData]
   );
+  const availableToAdopt = useMemo(
+    () => ownedData.filter((item: any) => String(item.adopter || "").trim() === ""),
+    [ownedData]
+  );
+  const adoptedPets = useMemo(
+    () => ownedData.filter((item: any) => String(item.adopter || "").trim() !== ""),
+    [ownedData]
+  );
   const catalogueData = useMemo(
-    () => applyCatalogueFilters(ownedData, filters),
-    [ownedData, filters]
+    () => applyCatalogueFilters(availableToAdopt, filters),
+    [availableToAdopt, filters]
+  );
+  const leaderboardData = useMemo(
+    () => applyCatalogueFilters(adoptedPets, filters),
+    [adoptedPets, filters]
   );
   const petShopData = ownedData;
 
@@ -260,7 +272,7 @@ function App() {
                   defaultData={ownedData}
                   filters={filters}
                   patchFilters={patchFilters}
-                  filteredCount={catalogueData.length}
+                  filteredCount={location === "/leaderboard" ? leaderboardData.length : catalogueData.length}
                   lastSheetSync={lastSheetSync}
                   isRefreshingSheet={isRefreshingSheet}
                   onRefreshSheet={refreshFromSheet}
@@ -281,7 +293,7 @@ function App() {
                 <Route
                     path="/leaderboard"
                     element={
-                      <LeaderboardPage setLocation={setLocation} data={catalogueData} />
+                      <LeaderboardPage setLocation={setLocation} data={leaderboardData} />
                     }
                 />
                 <Route
