@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { formatGeneration } from "../services/catalogueFilters";
 import { petImageSrc } from "../services/petImage";
+import { redeemAdoption, redeemErrorMessage } from "../services/adoptPet";
 import genderF from "../assets/icons/F-gem.png";
 import genderM from "../assets/icons/M-gem.png";
 import squareFrame from "../assets/square-pet-frame.png";
@@ -29,9 +30,11 @@ const LEFT_STATS = [
     { label: "Breed", key: "breed" },
 ];
 
-const PetAdoptionRow = ({ pet, mode }: { pet: any; mode: "adopt" | "leaderboard" }) => {
+const PetAdoptionRow = ({ pet, mode, onAdopted }: { pet: any; mode: "adopt" | "leaderboard"; onAdopted?: (id: string | number, twitchName: string) => void }) => {
     const [twitchName, setTwitchName] = useState("");
     const [code, setCode] = useState("");
+    const [busy, setBusy] = useState(false);
+    const [message, setMessage] = useState("");
     const isMale = String(pet.gender || "").trim().toUpperCase().startsWith("M");
     const generation = (formatGeneration(pet.generation) || "-").replace(/^G/, "");
     const rightStats = [
@@ -43,8 +46,40 @@ const PetAdoptionRow = ({ pet, mode }: { pet: any; mode: "adopt" | "leaderboard"
     const adopter = String(pet.adopter || "").trim();
     const price = pet.price === 0 || pet.price ? pet.price : "—";
 
-    const onAdopt = (event: React.FormEvent) => {
-        event.preventDefault();
+    const onAdopt = async (event?: React.FormEvent) => {
+        event?.preventDefault();
+        if (busy || adopter) {
+            return;
+        }
+        if (!twitchName.trim()) {
+            setMessage("Falta el nombre de Twitch.");
+            return;
+        }
+        if (!code.trim()) {
+            setMessage("Falta el código.");
+            return;
+        }
+        setBusy(true);
+        setMessage("Canjeando...");
+        try {
+            const result = await redeemAdoption({
+                id: pet.id,
+                twitchName,
+                code
+            });
+            if (result.ok && (result.already || result.id || result.adopter)) {
+                const name = result.adopter || twitchName.trim().replace(/^@/, "").toLowerCase();
+                onAdopted?.(pet.id, name);
+                setMessage(result.already ? "Ya estaba adoptado a tu nombre." : "¡Adoptado!");
+                setCode("");
+            } else {
+                setMessage(redeemErrorMessage(result.error));
+            }
+        } catch {
+            setMessage("No se pudo adoptar. Probá de nuevo.");
+        } finally {
+            setBusy(false);
+        }
     };
 
     return (
@@ -106,7 +141,7 @@ const PetAdoptionRow = ({ pet, mode }: { pet: any; mode: "adopt" | "leaderboard"
 
                 <img className="pet-vdiv pet-vdiv-adopt" src={ASSETS.vDiv} alt="" />
 
-                {mode === "adopt" ? (
+                {mode === "adopt" && !adopter ? (
                     <form className="pet-adopt" onSubmit={onAdopt}>
                         <div className="pet-coin">
                             <span className="pet-coin-price">{price}</span>
@@ -122,6 +157,7 @@ const PetAdoptionRow = ({ pet, mode }: { pet: any; mode: "adopt" | "leaderboard"
                             placeholder="enter your twitch name"
                             value={twitchName}
                             onChange={(event) => setTwitchName(event.target.value)}
+                            disabled={busy}
                         />
                         <input
                             className="pet-adopt-input"
@@ -129,8 +165,15 @@ const PetAdoptionRow = ({ pet, mode }: { pet: any; mode: "adopt" | "leaderboard"
                             placeholder="enter code"
                             value={code}
                             onChange={(event) => setCode(event.target.value)}
+                            disabled={busy}
                         />
-                        <button className="pet-adopt-btn" type="submit" aria-label="Adopt me">
+                        <button
+                            className="pet-adopt-btn"
+                            type="button"
+                            aria-label="Adopt me"
+                            disabled={busy}
+                            onClick={() => void onAdopt()}
+                        >
                             <img src={ASSETS.adoptBtn} alt="ADOPT ME" />
                         </button>
                     </form>
@@ -151,6 +194,7 @@ const PetAdoptionRow = ({ pet, mode }: { pet: any; mode: "adopt" | "leaderboard"
                     </div>
                 )}
             </div>
+            {message ? <div className="pet-adopt-banner">{message}</div> : null}
         </div>
     );
 };

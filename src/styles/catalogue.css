@@ -143,6 +143,8 @@
 
 /* padre de cada pet */
 .pet-row {
+    position: relative;
+    overflow: hidden;
     width: 94%;
     height: 26%;
     min-height: 170px;
@@ -309,6 +311,8 @@
 .pet-gifs {
     width: 72%;
     height: 170%;
+    z-index: 0;
+    pointer-events: none;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -373,6 +377,8 @@
 
 /* adopt derecha */
 .pet-adopt {
+    position: relative;
+    z-index: 5;
     width: 20%;
     height: 92%;
     display: flex;
@@ -528,6 +534,33 @@
     height: 100%;
     object-fit: contain;
     display: block;
+}
+
+.pet-adopt-btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.pet-adopt-msg {
+    display: none;
+}
+
+.pet-adopt-banner {
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    transform: translateX(-50%);
+    z-index: 40;
+    min-width: 36%;
+    padding: 0.45vw 1vw;
+    background: #1a1610;
+    border: 1px solid #e6d3a6;
+    color: #ffe08a;
+    font-family: 'Old Standard TT', serif;
+    font-style: italic;
+    font-size: 1.05vw;
+    text-align: center;
+    pointer-events: none;
 }
 
 .pet-row-adopt {

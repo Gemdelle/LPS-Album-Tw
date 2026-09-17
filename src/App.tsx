@@ -190,6 +190,12 @@ function App() {
   };
 
 
+  const markAdoptedLocal = (id: string | number, twitchName: string) => {
+    const patch = { adopter: twitchName };
+    patchSheetCache(id, patch);
+    setSourceData((prev) => mergePet(prev, id, patch));
+  };
+
   // 🔹 Cargar datos al montar el componente
   const refreshFromSheet = async () => {
     setIsRefreshingSheet(true);
@@ -268,6 +274,7 @@ function App() {
                           setLocation={setLocation}
                           setSelectedPetShop={setSelectedPetShop}
                           selectedPetShop={selectedPetShop}
+                          onAdopted={markAdoptedLocal}
                       />
                     }
                 />

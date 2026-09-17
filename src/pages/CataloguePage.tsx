@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import CatalogueSidebar from "../components/CatalogueSidebar";
 import PetAdoptionRow from "../components/PetAdoptionRow";
 
-const CataloguePage = ({ setLocation, data }: any) => {
+const CataloguePage = ({ setLocation, data, onAdopted }: any) => {
     const [catalogueData, setCatalogueData] = useState(data);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const CataloguePage = ({ setLocation, data }: any) => {
             <CatalogueSidebar />
             <div className="catalogue-list">
                 {catalogueData.map((petshop: any) => (
-                    <PetAdoptionRow key={petshop.id} pet={petshop} mode="adopt" />
+                    <PetAdoptionRow key={petshop.id} pet={petshop} mode="adopt" onAdopted={onAdopted} />
                 ))}
             </div>
         </main>
