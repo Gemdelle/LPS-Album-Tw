@@ -27,10 +27,12 @@ jobs:
       - run: npm run build
         env:
           CI: "false"
+      - name: Stamp build
+        run: echo "${GITHUB_SHA}" > build/version.txt
       - name: Publish to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
           publish_branch: gh-pages
-          force_orphan: true
+          force_orphan: false
