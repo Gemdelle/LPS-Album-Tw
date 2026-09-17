@@ -38,7 +38,7 @@ const Nav = ({ rawData, defaultData, filters, patchFilters, filteredCount, lastS
                 <ColoursFilter filters={filters} patchFilters={patchFilters} />
                 <IdFilter filters={filters} patchFilters={patchFilters} />
                 <GenderFilter filters={filters} patchFilters={patchFilters} />
-                <TypesFilter filters={filters} patchFilters={patchFilters} />
+                <TypesFilter filters={filters} patchFilters={patchFilters} defaultData={defaultData} />
                 <GenerationFilter filters={filters} patchFilters={patchFilters} defaultData={defaultData} />
                 <AnimalFilter filters={filters} patchFilters={patchFilters} defaultData={defaultData} />
                 <BreedFilter filters={filters} patchFilters={patchFilters} defaultData={defaultData} />

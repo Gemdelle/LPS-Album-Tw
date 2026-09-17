@@ -105,7 +105,7 @@ export function applyCatalogueFilters(data: any[], filters: CatalogueFilters) {
         if (genders.size > 0 && !genders.has(String(pet.gender || "").toUpperCase())) {
             return false;
         }
-        if (types.size > 0 && !types.has(String(pet.type || "").toUpperCase())) {
+        if (types.size > 0 && !types.has(normalizeKey(pet.type))) {
             return false;
         }
         if (animals.size > 0 && !animals.has(normalizeKey(pet.animal))) {

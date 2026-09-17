@@ -264,7 +264,7 @@
 }
 
 .pet-stats {
-    width: 35%;
+    width: 45%;
     height: 95%;
     display: flex;
     flex-direction: row;
@@ -289,12 +289,20 @@
 }
 
 .pet-stats-col {
-    width: 44%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* background-color: rgba(40, 80, 40, 0.2); */
+    /* background-color: blue; */
+}
+
+/* anchos de las dos columnas de stats — tocá estos dos % */
+.pet-stats-col:first-child {
+    width: 50%;
+}
+
+.pet-stats-col:last-child {
+    width: 45%;
 }
 
 .pet-vdiv {
@@ -550,31 +558,37 @@
 }
 
 @keyframes jewel-bob {
+
     0%,
     100% {
         transform: translateY(12%);
     }
+
     50% {
         transform: translateY(2%);
     }
 }
 
 @keyframes jewel-tilt {
+
     0%,
     100% {
         transform: rotate(-7deg);
     }
+
     50% {
         transform: rotate(8deg);
     }
 }
 
 @keyframes jewel-shine {
+
     0%,
     100% {
         background-position: 120% 0;
         opacity: 0.08;
     }
+
     45% {
         background-position: -20% 0;
         opacity: 0.35;
@@ -582,15 +596,18 @@
 }
 
 @keyframes jewel-spark {
+
     0%,
     100% {
         opacity: 0;
         transform: scale(0.4);
     }
+
     40% {
         opacity: 0.85;
         transform: scale(1);
     }
+
     70% {
         opacity: 0.15;
         transform: scale(0.6);
