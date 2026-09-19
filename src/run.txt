@@ -1,2 +1,0 @@
-cd "C:\Users\Gemdelle\Downloads\05. Programming\LPS\LPS-Album"
-npm start

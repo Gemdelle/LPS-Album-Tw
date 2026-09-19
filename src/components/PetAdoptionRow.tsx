@@ -1,19 +1,11 @@
 import { useState } from "react";
 import { formatGeneration } from "../services/catalogueFilters";
 import { petImageSrc } from "../services/petImage";
+import { GIF_COMMANDS, petGifSources } from "../services/petGifs";
 import { redeemAdoption, redeemErrorMessage } from "../services/adoptPet";
 import genderF from "../assets/icons/F-gem.png";
 import genderM from "../assets/icons/M-gem.png";
 import squareFrame from "../assets/square-pet-frame.png";
-
-const GIF_SRC = [
-    `${process.env.PUBLIC_URL}/giphs/spadabeccia/spadabeccia_1_idle.gif`,
-    `${process.env.PUBLIC_URL}/giphs/spadabeccia/spadabeccia-2.gif`,
-    `${process.env.PUBLIC_URL}/giphs/spadabeccia/spadabeccia-3.gif`,
-    `${process.env.PUBLIC_URL}/giphs/spadabeccia/spadabeccia-4.gif`,
-    `${process.env.PUBLIC_URL}/giphs/spadabeccia/spadabeccia-5.gif`,
-    `${process.env.PUBLIC_URL}/giphs/spadabeccia/spadabeccia-6.gif`,
-];
 
 const ASSETS = {
     rowFrame: `${process.env.PUBLIC_URL}/Images/adoption/adoption-frame.png`,
@@ -24,6 +16,22 @@ const ASSETS = {
     rarityBar: `${process.env.PUBLIC_URL}/Images/rarity/rarity-bar.png`,
     rarityGem: (level: number) => `${process.env.PUBLIC_URL}/Images/rarity/rarity-${level}.png`,
 };
+
+function PetGifImage({ pet, index, silhouette }: { pet: any; index: number; silhouette?: boolean }) {
+    const sources = petGifSources(pet, index, { silhouette });
+    const [srcIndex, setSrcIndex] = useState(0);
+    const src = sources[Math.min(srcIndex, sources.length - 1)];
+    return (
+        <img
+            src={src}
+            alt=""
+            loading="lazy"
+            onError={() => {
+                setSrcIndex((current) => (current < sources.length - 1 ? current + 1 : current));
+            }}
+        />
+    );
+}
 
 function rarityLevel(value: unknown) {
     const n = Number(value);
@@ -134,14 +142,14 @@ const PetAdoptionRow = ({ pet, mode, onAdopted }: { pet: any; mode: "adopt" | "l
                             </div>
                         </div>
                         <div className="pet-gifs">
-                            {GIF_SRC.map((src, index) => (
+                            {GIF_COMMANDS.map((command, index) => (
                                 <div
                                     className={`pet-gif-slot ${mode === "adopt" ? "pet-gif-hidden" : ""}`}
-                                    key={index}
+                                    key={command}
                                 >
-                                    <span>!command</span>
+                                    <span>!{command}</span>
                                     <div className="pet-gif-wrap">
-                                        <img src={src} alt="" loading="lazy" />
+                                        <PetGifImage pet={pet} index={index} silhouette={mode === "adopt"} />
                                         {mode === "adopt" ? <em>?</em> : null}
                                     </div>
                                 </div>
